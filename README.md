@@ -35,7 +35,7 @@ For more details on the dateset , see [this link](https://www.openfoam.com/docum
 
 Note that $u$ is discontinous on $(-0.05,0.05)$, $(0.05,0.05)$. This is not a problem as the dataset is created using the finite volume method, using icoFoam.
 
-$\nu$ varies from $0.001$ to $$0.000001$, as such the Reynolds number varies from $100$ to $10000.$
+$\nu$ varies from $0.001$ to $0.000001$, as such the Reynolds number varies from $100$ to $10000.$
 
 ## Package installation guide
 First install OpenFoam 2312. Them from this directory do the following:
