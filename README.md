@@ -5,17 +5,29 @@
 The dataset is the solution of
 
  $$\frac{\partial u}{\partial t}(t,x,y)+(u(t,x,y)\cdot \nabla) u(t,x,y)-\nu \Delta u(t.x,y)=-\nabla p(t,x,y) \quad x\in (-0.05,0.05), y\in (-0.05,0.05), t\in (0,10)$$
+
  $$\nabla \cdot u=0$$
+
  $$u(0,x,y)=(0,0) \quad x\in (-0.05,0.05), y\in (-0.05,0.05)$$
+
  $$u(0,x,-0.05)=(0,0) \quad x\in [-0.05,0.05]$$
+
  $$u(0,x,0.05)=(1,0) \quad x\in [-0.05,0.05]$$
+ 
  $$u(0,-0.05,y)=(0,0) \quad y\in [-0.05,0.05)$$
+ 
  $$u(0,0.05,y)=(0,0) \quad y\in [-0.05,0.05)$$
+ 
  $$p(0,x,y)=0$$
+ 
  $$u(t,x,y)=(0,0) \quad x\in (-0.05,0.05), y\in (-0.05,0.05), t\in (0,10)$$
+ 
  $$u(t,x,-0.05)=(0,0) \quad x\in [-0.05,0.05],t\in (0,10)$$
+ 
  $$u(t,x,0.05)=(1,0) \quad x\in [-0.05,0.05],t\in (0,10)$$
+ 
  $$u(t,-0.05,y)=(0,0) \quad y\in [-0.05,0.05),t\in (0,10)$$
+ 
  $$u(t,0.05,y)=(0,0) \quad y\in [-0.05,0.05), t\in (0,10)$$
 
 As we are in 2D this system has an unique weak solution (see Ladyzhenskaya (1958, 1959), Lions and Prodi (1959)).
