@@ -14,6 +14,7 @@ solver="icoFoam"
 case="."
 case_dir="./"
 dire=SolutionDirectory(case)
+dire.clearResults()
 print(dire.initialDir())
 sol=SolutionFile(dire.initialDir(),"U")
 transport_properties_file = "constant/transportProperties"
@@ -46,7 +47,9 @@ for i in trange(len(par)):
         p=Ofpp.parse_internal_field(str(t_2)+"/p")
         U_vec[i,j,:,:]=U[:,:2]
         p_vec[i,j,:]=p
-        
+    dire.clearResults()
+
+
 sol.purgeFile()
 np.save("U.npy",U_vec)
 np.save("p.npy",p_vec)

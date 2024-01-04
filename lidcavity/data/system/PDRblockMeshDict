@@ -18,14 +18,14 @@ scale   0.1;
 
 x
 {
-    points  (0 1);
+    points  (-0.5 0.5);
     nCells  (20);
     ratios  (1);
 }
 
 y
 {
-    points  (0 1);
+    points  (-0.5 0.5);
     nCells  (20);
     ratios  (1);
 }
