@@ -30,6 +30,7 @@ mesh = Ofpp.FoamMesh('.')
 U_vec=np.zeros((len(par),len(times),400,2))
 p_vec=np.zeros((len(par),len(times),400))
 for i in trange(len(par)):
+    dire.clearResults()
     nu_value = 1/par[i]
     transport_properties = ParsedParameterFile(case_dir+transport_properties_file)
     transport_properties['nu'] = nu_value
@@ -47,7 +48,6 @@ for i in trange(len(par)):
         p=Ofpp.parse_internal_field(str(t_2)+"/p")
         U_vec[i,j,:,:]=U[:,:2]
         p_vec[i,j,:]=p
-    dire.clearResults()
 
 
 sol.purgeFile()
