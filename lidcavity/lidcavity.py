@@ -10,7 +10,7 @@ class LidCavity():
     def __init__(self, batch_size):
         from numpy.random import Generator, PCG64
         self.rg = Generator(PCG64(42))
-        test_indices=self.rg.integers(0, 600, size=100)
+        test_indices=self.rg.choice(600,size=100, replace=False)
         train_indices=np.setdiff1d(np.arange(600),test_indices)
         self.batch_size = batch_size
         self.data_directory = os.path.join(os.path.dirname(__file__), 'data')
