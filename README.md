@@ -39,7 +39,7 @@ $\nu$ varies from $0.001$ to $0.000001$, as such the Reynolds number varies from
 
 We assume that $u$ and $p$ belong to the space of functions 
 ```math
-L^{2}([-0.05,0.05],0,10)=\{u:[0,10]\times [-0.05,0.05]\times [-0.05,0.05]\rightarrow \mathbb{R}^{k} | \int_{0}^{10} ||u(t)||_{1}^{2}dt=\int_{0}^{10}\left(\int_{[-0.05,0.05]}\sum_{i=1}^{k}|u(t,x,y)\cdot e_{i}|dxdy\right)^{2}dt<+\infty \}.
+L^{2}([-0.05,0.05],0,10)=\{u:[0,10]\times [-0.05,0.05]\times [-0.05,0.05]\rightarrow \mathbb{R}^{k} \text{ s.t. } \int_{0}^{10} ||u(t)||_{1}^{2}dt=\int_{0}^{10}\left(\int_{[-0.05,0.05]}\sum_{i=1}^{k}|u(t,x,y)\cdot e_{i}|dxdy\right)^{2}dt<+\infty \}.
 ```
 
 
