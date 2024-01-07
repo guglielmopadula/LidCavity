@@ -45,9 +45,10 @@ L^{2}([-0.05,0.05],0,10)=\{u:[0,10]\times [-0.05,0.05]\times [-0.05,0.05]\righta
 
 So the relative error that is used for measuring the model performance is:
 
-$$
-\frac{\int_{0}^{10}\left(\int_{[-0.05,0.05]}^{} \sum_{i=1}^{k}|(u(t,x,y)-\hat{u}(t,x,y))\cdot e_{i}|dxdy\right)^{2}dt}{\int_{0}^{10}\left(\int_{[-0.05,0.05]}\sum_{i=1}^{k}|u(t,x,y)\cdot e_{i}|dxdy\right)^{2}dt}
-$$
+```math
+\frac{\int_{0}^{10}\left(\int_{[-0.05,0.05]}^{} \sum\limits_{i=1}^{k}|(u(t,x,y)-\hat{u}(t,x,y))\cdot e_{i}|dxdy\right)^{2}dt}{\int_{0}^{10}\left(\int_{[-0.05,0.05]}\sum\limits_{i=1}^{k}|u(t,x,y)\cdot e_{i}|dxdy\right)^{2}dt}
+```
+
 
 The integrals are calculated with the composite trapezoidal formula.
 
