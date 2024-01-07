@@ -29,6 +29,8 @@ class LidCavity():
         self.points=np.load(os.path.join(self.data_directory, 'points.npy'))
         self.x=self.points[:,0]
         self.y=self.points[:,1]
+        self.weights_space=np.load(os.path.join(self.data_directory, 'weights_space.npy'))
+        self.weights_time=np.load(os.path.join(self.data_directory, 'weights_time.npy'))
         self.train_dataset=TensorDataset(self.grid_train,self.V_train)
         self.test_dataset=TensorDataset(self.grid_test,self.V_test)
         self.train_loader=torch.utils.data.DataLoader(self.train_dataset,batch_size=batch_size,shuffle=True)

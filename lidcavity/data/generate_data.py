@@ -10,6 +10,7 @@ from PyFoam.RunDictionary.SolutionFile import SolutionFile
 from PyFoam.RunDictionary.SolutionDirectory import SolutionDirectory
 from PyFoam.RunDictionary.ParsedParameterFile import ParsedParameterFile
 from PyFoam.Basics.DataStructures import Field
+from scipy.spatial import Delaunay
 solver="icoFoam"
 case="."
 case_dir="./"
@@ -81,3 +82,21 @@ grid[:,:,:,3]=np.tile(par.reshape((len(par),1,1)),(1,U_vec.shape[1],points.shape
 result=np.concatenate((U_vec,p_vec.reshape(p_vec.shape[0],p_vec.shape[1],p_vec.shape[2],1)),axis=-1)
 np.save("grid.npy",grid)
 np.save("result.npy",result)
+
+tri=Delaunay(points)
+triangles=tri.simplices
+np.save("triangles.npy",triangles)
+h_points=np.concatenate((np.ones(len(points)).reshape(-1,1),points),axis=1)
+areas=np.abs(np.linalg.det(h_points[triangles])*1/2)
+weights_triangles=areas*1/3
+weights_triangles=np.tile(weights_triangles.reshape(-1,1),(1,3))
+weights_triangles=weights_triangles.flatten()
+weights_points=np.bincount(triangles.flatten(),weights=weights_triangles)
+np.save("weights_space.npy",weights_points)
+
+indexes=np.argsort(times)
+edges=np.concatenate((np.arange(0,len(times)-1).reshape(-1,1),np.arange(1,len(times)).reshape(-1,1)),axis=1)
+edges=indexes[edges]
+weights_edges=np.tile(times[edges[:,1]]-times[edges[:,0]],(1,2))/2
+weights_times=np.bincount(edges.flatten(),weights=weights_edges.flatten())
+np.save("weights_times.npy",weights_times)
