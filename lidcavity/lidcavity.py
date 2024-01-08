@@ -35,3 +35,5 @@ class LidCavity():
         self.test_dataset=TensorDataset(self.grid_test,self.V_test)
         self.train_loader=torch.utils.data.DataLoader(self.train_dataset,batch_size=batch_size,shuffle=False)
         self.test_loader=torch.utils.data.DataLoader(self.test_dataset,batch_size=batch_size,shuffle=False)
+        self.diff_x=np.load(os.path.join(self.data_directory, 'diff_x.npy'))
+        self.diff_y=np.load(os.path.join(self.data_directory, 'diff_y.npy'))

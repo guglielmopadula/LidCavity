@@ -100,3 +100,44 @@ edges=indexes[edges]
 weights_edges=np.tile(times[edges[:,1]]-times[edges[:,0]],(1,2))/2
 weights_times=np.bincount(edges.flatten(),weights=weights_edges.flatten())
 np.save("weights_times.npy",weights_times)
+
+
+h=0.005
+size=20
+
+def fortran_ordering(i,j):
+    return j*size+i
+
+def inverse_fortran_ordering(k):
+    return k%size,k//size
+
+
+M_x=np.zeros((400,400))
+
+M_y=np.zeros((400,400))
+
+for k in range(400):
+    i,j=inverse_fortran_ordering(k)
+    if i==0:
+        M_x[k,k]=-1/h
+        M_x[k,fortran_ordering(i+1,j)]=1/h
+    elif i==19:
+            M_x[k,k]=1/h
+            M_x[k,fortran_ordering(i-1,j)]=-1/h
+
+    else:
+        M_x[k,fortran_ordering(i-1,j)]=-1/(2*h)
+        M_x[k,fortran_ordering(i+1,j)]=1/(2*h)
+
+    if j==0:
+        M_y[k,k]=-1/h
+        M_y[k,fortran_ordering(i,j+1)]=1/h  
+    elif j==19:
+        M_y[k,k]=1/h
+        M_y[k,fortran_ordering(i,j-1)]=-1/h
+    else:
+        M_y[k,fortran_ordering(i,j-1)]=-1/(2*h)
+        M_y[k,fortran_ordering(i,j+1)]=1/(2*h)
+
+np.save("diff_x.npy",M_x)
+np.save("diff_y.npy",M_y)
