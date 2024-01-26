@@ -1,4 +1,5 @@
 import PyFoam
+import skimage.measure
 import numpy as np
 from tqdm import trange
 import Ofpp
@@ -26,13 +27,16 @@ velocity_field_name = "U"
 times=np.linspace(0,10,101)
 times=np.delete(times,0)
 times=np.round(times,1)
-par=np.concatenate((np.linspace(1000,3000,300),np.linspace(3001,100000,300)))
+par=np.linspace(100,1000,600)
 mesh = Ofpp.FoamMesh('.')
-U_vec=np.zeros((len(par),len(times),400,2))
-p_vec=np.zeros((len(par),len(times),400))
+U_vec=np.zeros((len(par),len(times),21*21,2))
+p_vec=np.zeros((len(par),len(times),21*21))
+
 for i in trange(len(par)):
     dire.clearResults()
     nu_value = 1/par[i]
+    U_temp=np.zeros((len(times),105*105,2))
+    p_temp=np.zeros((len(times),105*105))
     transport_properties = ParsedParameterFile(case_dir+transport_properties_file)
     transport_properties['nu'] = nu_value
     transport_properties.writeFile()
@@ -47,8 +51,15 @@ for i in trange(len(par)):
             t_2=t
         U=Ofpp.parse_internal_field(str(t_2)+"/U")
         p=Ofpp.parse_internal_field(str(t_2)+"/p")
-        U_vec[i,j,:,:]=U[:,:2]
-        p_vec[i,j,:]=p
+        U_temp[j]=U[:,:2]
+        p_temp[j]=p
+    U_temp=U_temp.reshape((len(times),105,105,2))
+    p_temp=p_temp.reshape((len(times),105,105))
+    U_temp=skimage.measure.block_reduce(U_temp, (1,5,5,1), np.mean)
+    p_temp=skimage.measure.block_reduce(p_temp, (1,5,5), np.mean)
+    U_vec[i]=U_temp.reshape((len(times),21*21,2))
+    p_vec[i]=p_temp.reshape((len(times),21*21))
+
 
 
 sol.purgeFile()
@@ -72,6 +83,9 @@ for i in range(mesh.num_cell):
     points[i]=np.mean(mesh.points[v],axis=0)
 
 points=points[:,:2]
+points=points.reshape(105,105,2)
+points=skimage.measure.block_reduce(points, (5,5,1), np.mean)
+points=points.reshape(21*21,2)
 np.save("points.npy",points)
 dire.clearResults()
 
@@ -102,8 +116,8 @@ weights_times=np.bincount(edges.flatten(),weights=weights_edges.flatten())
 np.save("weights_times.npy",weights_times)
 
 
-h=0.005
-size=20
+h=1/21
+size=21
 
 def fortran_ordering(i,j):
     return j*size+i
@@ -112,16 +126,16 @@ def inverse_fortran_ordering(k):
     return k%size,k//size
 
 
-M_x=np.zeros((400,400))
+M_x=np.zeros((21*21,21*21))
 
-M_y=np.zeros((400,400))
+M_y=np.zeros((21*21,21*21))
 
-for k in range(400):
+for k in range(21*21):
     i,j=inverse_fortran_ordering(k)
     if i==0:
         M_x[k,k]=-1/h
         M_x[k,fortran_ordering(i+1,j)]=1/h
-    elif i==19:
+    elif i==20:
             M_x[k,k]=1/h
             M_x[k,fortran_ordering(i-1,j)]=-1/h
 
@@ -132,7 +146,7 @@ for k in range(400):
     if j==0:
         M_y[k,k]=-1/h
         M_y[k,fortran_ordering(i,j+1)]=1/h  
-    elif j==19:
+    elif j==20:
         M_y[k,k]=1/h
         M_y[k,fortran_ordering(i,j-1)]=-1/h
     else:
